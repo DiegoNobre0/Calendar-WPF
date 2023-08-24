@@ -1,4 +1,7 @@
-﻿using System.Windows;
+﻿using System.Data.SQLite;
+using System.Data;
+using System;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Calender.UserControls
@@ -9,7 +12,6 @@ namespace Calender.UserControls
         {
             InitializeComponent();
         }
-
 
         public string Caption
         {
