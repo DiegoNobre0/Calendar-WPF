@@ -5,11 +5,14 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Calender.Model;
-using Microsoft.Graph.Models;
 using System.Data.SqlClient;
 using System.Security.Cryptography;
 using System.Globalization;
 using System.Windows.Media.Imaging;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using Calender.Repository;
+using System.Collections.Generic;
 
 
 namespace Calender.UserControls
@@ -20,6 +23,12 @@ namespace Calender.UserControls
         {
             InitializeComponent();
         }
+
+        private CalendarRepository _calendarRepository = new CalendarRepository();
+        public event EventHandler<EditEventArgs> EditClicked;
+        public event EventHandler<DeleteEventArgs> DeleteClicked;
+        private bool isEditing = false;
+        
 
         public int Id
         {
@@ -32,7 +41,7 @@ namespace Calender.UserControls
         public string Message
         {
             get { return (string)GetValue(MessageProperty); }
-            set { SetValue(MessageProperty, value); }
+            set { SetValue(MessageProperty, value);}
         }
 
         public static readonly DependencyProperty MessageProperty = DependencyProperty.Register("Message", typeof(string), typeof(Item));
@@ -41,7 +50,7 @@ namespace Calender.UserControls
         public string Time
         {
             get { return (string)GetValue(TimeProperty); }
-            set { SetValue(TimeProperty, value); }
+            set { SetValue(TimeProperty, value);}
         }
 
         public static readonly DependencyProperty TimeProperty = DependencyProperty.Register("Time", typeof(string), typeof(Item));
@@ -50,7 +59,7 @@ namespace Calender.UserControls
         public SolidColorBrush Color
         {
             get { return (SolidColorBrush)GetValue(ColorProperty); }
-            set { SetValue(ColorProperty, value); }
+            set { SetValue(ColorProperty, value);}
         }
 
         public static readonly DependencyProperty ColorProperty = DependencyProperty.Register("Color", typeof(SolidColorBrush), typeof(Item));
@@ -59,7 +68,7 @@ namespace Calender.UserControls
         public FontAwesome.WPF.FontAwesomeIcon Icon
         {
             get { return (FontAwesome.WPF.FontAwesomeIcon)GetValue(IconProperty); }
-            set { SetValue(IconProperty, value); }
+            set { SetValue(IconProperty, value);}
         }
 
         public static readonly DependencyProperty IconProperty = DependencyProperty.Register("Icon", typeof(FontAwesome.WPF.FontAwesomeIcon), typeof(Item));
@@ -73,10 +82,7 @@ namespace Calender.UserControls
 
         public static readonly DependencyProperty IconBellProperty = DependencyProperty.Register("IconBell", typeof(FontAwesome.WPF.FontAwesomeIcon), typeof(Item));
 
-
-        public event EventHandler<EditEventArgs> EditClicked;
-        public event EventHandler<DeleteEventArgs> DeleteClicked;
-        private bool isEditing = false;
+     
 
 
         private void EditButton_Click(object sender, RoutedEventArgs e)
@@ -91,13 +97,16 @@ namespace Calender.UserControls
                 textBlockTime.Visibility = Visibility.Visible;
                 editTimeTextBox.Visibility = Visibility.Collapsed;
 
-                EditEventArgs remider = new EditEventArgs();
+                Reminder remider = new Reminder();
                 remider.Id = Id;
                 remider.Message = Message;
                 remider.Time = Time;
-                //remider.Date = Calendar.SelectedDate.Value;
+                //remider.Date = date;
 
-                UpdateReminder(remider);
+                //_calendarRepository.UpdateReminder(remider);
+
+                //_mainWindow.FilterRemindersBySelectedDate();
+
                 editButton.Content = "Editar";
             }
             else
@@ -118,92 +127,40 @@ namespace Calender.UserControls
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
-        {           
-            DeleteEventArgs _id = new DeleteEventArgs();
-            _id.Id = Id;
+        {
+            Reminder remider = new Reminder();
+            remider.Id = Id;
 
-            DeleteReminder(_id.Id);
+            //_calendarRepository.DeleteReminder(remider.Id);
         }
 
-        private void UpdateReminder(EditEventArgs remider)
-        {
-            SQLiteCommand command;
-            SQLiteConnection m_dbConnection;
-            string connectionString = "Data Source=c:\\dados\\RemindersDataBase.sqlite; Version=3;";
-            string commandQuery = "Update Reminders set Message = @Message, Time = @Time where Id = @Id";
+        //public void FilterRemindersByDateSelect(DateTime selectedDate)
+        //{
 
-            try
-            {
-                command = new SQLiteCommand();
+        //    DateTime date = selectedDate;
+        //    selectedDayTextBlock.Text = selectedDate.Day.ToString(); ;
 
-                command.CommandText = commandQuery;
-                command.CommandType = CommandType.Text;
+        //    // Filtrar a lista de lembretes com base na data selecionada
+        //    List<Reminder> filteredReminders = Reminders.Where(r => r.Date.Date == selectedDate.Date).ToList();
 
-                m_dbConnection = new SQLiteConnection(connectionString);
-                m_dbConnection.Open();
+        //    // Limpar a lista de itens no ItemsControl
+        //    reminderItemsControl.Items.Clear();
 
-                command = new SQLiteCommand(commandQuery, m_dbConnection);
-                command.Parameters.AddWithValue("@Id", remider.Id);
-                command.Parameters.AddWithValue("@Message", remider.Message);
-                command.Parameters.AddWithValue("@Time", remider.Time);             
+        //    // Adicionar os itens filtrados à lista
+        //    foreach (var reminderData in filteredReminders)
+        //    {
+        //        var userControl = new UserControls.Item();
+        //        userControl.Id = reminderData.Id;
+        //        userControl.Message = reminderData.Message;
+        //        userControl.Time = reminderData.Time;
+        //        userControl.Color = new SolidColorBrush(Colors.White);
+        //        userControl.Icon = FontAwesome.WPF.FontAwesomeIcon.CheckCircle;
+        //        userControl.IconBell = FontAwesome.WPF.FontAwesomeIcon.Bell;
 
-                var Update = command.ExecuteScalar();
+        //        reminderItemsControl.Items.Add(userControl);
+        //    }
+        //}
 
-                m_dbConnection.Close();
-                m_dbConnection.Dispose();
-            }
-            catch (Exception exception)
-            {
-                throw new Exception(exception.Message, exception);
-            }
-        }
-
-        private bool DeleteReminder(int? id)
-        {
-            SQLiteCommand command;
-            SQLiteConnection m_dbConnection;
-            string connectionString = "Data Source=c:\\dados\\RemindersDataBase.sqlite; Version=3;";
-            string commandQuery = "Delete from Reminders where Id = @Id";
-            int rowsCommand;
-            bool isDeleted = true;
-          
-            try
-            {
-                command = new SQLiteCommand();
-
-                command.CommandText = commandQuery;
-                command.CommandType = CommandType.Text;
-
-                m_dbConnection = new SQLiteConnection(connectionString);
-
-                m_dbConnection.Open();
-
-                command = new SQLiteCommand(commandQuery, m_dbConnection);
-                command.CommandType = CommandType.Text;
-                command.Parameters.AddWithValue("@Id", id);
-
-                rowsCommand = command.ExecuteNonQuery();
-
-                m_dbConnection.Close();
-                m_dbConnection.Dispose();
- 
-
-                if (rowsCommand == 0)
-                {
-                    throw new Exception("Erro - nenhum registro foi deletado para o id informado: " + id);
-                }
-                else
-                {
-                    isDeleted = true;                    
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }            
-
-            return isDeleted;
-        }       
     }
 
     public class EditEventArgs

@@ -4,8 +4,6 @@
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-
-
         <Style x:Key="button" TargetType="Button">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="Foreground" Value="White" />
@@ -306,7 +304,5 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
-
     </Application.Resources>
 </Application>

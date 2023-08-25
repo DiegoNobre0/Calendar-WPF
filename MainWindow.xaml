@@ -5,9 +5,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:us="clr-namespace:Calender.UserControls"
-     
         FontFamily="Trebuchet MS" mc:Ignorable="d" WindowStartupLocation="CenterScreen" WindowStyle="None" 
-        AllowsTransparency="True" Background="Transparent" Height="590" Width="900">
+        AllowsTransparency="True" Background="Transparent" Height="590" Width="900"
+        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls">
+       
     
     <Grid>
         <!--Grid Background-->
@@ -86,18 +87,16 @@
                     </Grid>
                 </Border>
 
-                <!--Lista de Reminders-->
-                <DataGrid>
-                    <Grid >
-                        <ItemsControl Name="reminderItemsControl" ItemsSource="{Binding Reminders}"  >
+                <!--Lista de Reminders-->           
+                 <Grid >
+                    <ItemsControl Name="reminderItemsControl" ItemsSource="{Binding Reminders}" >
                             <ItemsControl.ItemTemplate >
                                 <DataTemplate>
                                     <us:Item EditClicked="Item_EditClicked" DeleteClicked="Item_DeleteClicked" Id="{Binding Id}" Message="{Binding Message}" />
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </Grid>
-                </DataGrid>        
+                    </ItemsControl>
+                 </Grid>                      
             </StackPanel>
         </Grid>
     </Grid>

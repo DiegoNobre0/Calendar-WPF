@@ -1,18 +1,43 @@
-﻿using System;
+﻿using Hangfire.Annotations;
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Calender.Model
 {
-    class Reminder 
+    public class Reminder
     {
-        public int Id { get; set; }
 
-        public string Message { get; set; }
+        public int id;
+        public string message;
+        public string time;
+        public DateTime date;
 
-        public string Time { get; set; }
+        public int Id
+        {
+            get { return id; }
+            set { id = value; }
+        }
 
-        public DateTime Date { get; set; }
+        public string Message
+        {
+            get { return message; }
+            set { message = value; }
+        }
+
+        public string Time
+        {
+            get { return time; }
+            set { time = value; }
+        }
+
+        public DateTime Date
+        {
+            get { return date; }
+            set { date = value; }
+        }
     }
 }
