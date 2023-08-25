@@ -92,7 +92,7 @@
                     <ItemsControl Name="reminderItemsControl" ItemsSource="{Binding Reminders}" >
                             <ItemsControl.ItemTemplate >
                                 <DataTemplate>
-                                    <us:Item EditClicked="Item_EditClicked" DeleteClicked="Item_DeleteClicked" Id="{Binding Id}" Message="{Binding Message}" />
+                                <us:Item EditClicked="EditButton_Click" DeleteClicked="Item_DeleteClicked" Id="{Binding Id}" Message="{Binding Message}" />
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                     </ItemsControl>

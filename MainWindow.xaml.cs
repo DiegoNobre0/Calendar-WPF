@@ -46,9 +46,6 @@ namespace Calender
         private CalendarRepository _calendarRepository = new CalendarRepository();
         private Timer alarmTimer;
         private bool isEditing = false;
-        public event EventHandler<EditEventArgs> EditClicked;
-        public event EventHandler<DeleteEventArgs> DeleteClicked;
-
 
         public void Calendar_SelectedDatesChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
@@ -193,120 +190,6 @@ namespace Calender
             }
         }
 
-        
-
-        //private void AddReminder(Reminder reminder)
-        //{
-        //    try
-        //    {
-        //        string connectionString = "Data Source=c:\\dados\\RemindersDataBase.sqlite; Version=3;";
-        //        string commandQuery = "Insert into Reminders (Message, Time , Date) values (@Message, @Time, @Date)";
-
-        //        SQLiteConnection m_dbConnection = new SQLiteConnection(connectionString);
-
-        //        m_dbConnection.Open();
-
-        //        SQLiteCommand command = new SQLiteCommand(commandQuery, m_dbConnection);
-
-        //        command.CommandType = CommandType.Text;
-        //        command.Parameters.AddWithValue("@Message", reminder.Message);
-        //        command.Parameters.AddWithValue("@Time", reminder.Time);
-        //        command.Parameters.AddWithValue("@Date", reminder.Date);
-
-        //        command.ExecuteNonQuery();
-
-        //        m_dbConnection.Close();
-
-        //        ScheduleAlarm();
-
-        //        Reminders.Add(reminder);
-
-        //        FilterRemindersBySelectedDate();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
-
-        //private ObservableCollection<Reminder> GetReminder()
-        //{
-        //    ObservableCollection<Reminder> reminders;
-        //    Reminder reminder;           
-
-        //    SQLiteCommand command = new SQLiteCommand();
-
-        //    string connectionString = "Data Source=c:\\dados\\RemindersDataBase.sqlite; Version=3;";
-        //    string commandQuery = "SELECT  Id, Message, Time , Date from Reminders WHERE 1=1";
-
-        //    command.CommandText = commandQuery;
-        //    command.CommandType = CommandType.Text;
-
-        //    SQLiteConnection m_dbConnection = new SQLiteConnection(connectionString);
-
-        //    command = new SQLiteCommand(commandQuery, m_dbConnection);
-
-        //    m_dbConnection.Open();
-
-        //    SQLiteDataReader _SqliteDataReader = command.ExecuteReader();
-
-        //    reminders = new ObservableCollection<Reminder>();
-
-        //    while (_SqliteDataReader.Read())
-        //    {
-        //        reminder = new Reminder();
-        //        reminder.Id = Convert.ToInt32(_SqliteDataReader["Id"]);
-        //        reminder.Message = _SqliteDataReader["Message"].ToString();
-        //        reminder.Time = _SqliteDataReader["Time"].ToString();
-        //        reminder.Date = Convert.ToDateTime(_SqliteDataReader["Date"]);
-
-        //        reminders.Add(reminder);
-        //    }
-
-        //    m_dbConnection.Close();
-        //    m_dbConnection.Dispose();
-
-        //    return reminders;
-        //}
-
-        //public static void CreateBankSQlite()
-        //{
-        //    try
-        //    {
-        //        SQLiteConnection.CreateFile(@"c:\dados\RemindersDataBase.sqlite");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
-
-
-        //public static void CreateTableSQlite()
-        //{
-        //    try
-        //    {
-        //        string connectionString = "Data Source=c:\\dados\\RemindersDataBase.sqlite; Version=3;";
-
-        //        SQLiteConnection m_dbConnection = new SQLiteConnection(connectionString);
-
-        //        m_dbConnection.Open();
-
-        //        string commandQuery = "Create Table Reminders (Id INTEGER PRIMARY KEY AUTOINCREMENT, Message VARCHAR(20), Time VARCHAR(20), Date DATETIME)";
-
-        //        SQLiteCommand command = new SQLiteCommand(commandQuery, m_dbConnection);
-
-        //        command.ExecuteNonQuery();
-
-        //        m_dbConnection.Close();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
-
-
         public void ScheduleAlarm()
         {
             ObservableCollection<Reminder> reminders = _calendarRepository.GetReminder();
@@ -371,15 +254,5 @@ namespace Calender
     }
 }
 
-public class EditEventArgs
-{
-    public int Id { get; set; }
-    public string Message { get; set; }
-    public string Time { get; set; }
-}
 
-public class DeleteEventArgs
-{
-    public int Id { get; set; }
-}
 

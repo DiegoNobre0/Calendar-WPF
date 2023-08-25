@@ -24,7 +24,9 @@ namespace Calender.UserControls
             InitializeComponent();
         }
 
-        private CalendarRepository _calendarRepository = new CalendarRepository();        
+        private CalendarRepository _calendarRepository = new CalendarRepository();
+        public event EventHandler<EditEventArgs> EditClicked;
+        public event EventHandler<DeleteEventArgs> DeleteClicked;
         private bool isEditing = false;
         
 
@@ -85,7 +87,6 @@ namespace Calender.UserControls
 
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
-            DateTime selectedDate = myCalendar.SelectedDate.Value;
             if (isEditing)
             {
                 // Salvar as alterações e alternar de volta para o modo de exibição
@@ -160,5 +161,17 @@ namespace Calender.UserControls
         //    }
         //}
 
-    } 
+    }
+
+    public class EditEventArgs
+    {
+        public int Id { get; set; } 
+        public string Message { get; set; }
+        public string Time { get; set; }
+    }
+  
+    public class DeleteEventArgs 
+    {
+        public int Id { get; set; } 
+    }
 }
