@@ -10,7 +10,6 @@ namespace Calender.Model
 {
     public class Reminder
     {
-
         public int id;
         public string message;
         public string time;

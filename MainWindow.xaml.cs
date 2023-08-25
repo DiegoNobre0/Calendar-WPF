@@ -158,7 +158,6 @@ namespace Calender
 
         private void AddReminderButton_Click(object sender, RoutedEventArgs e)
         {
-
             if (myCalendar.SelectedDate.HasValue)
             {
                 if (txtMessage.Text == "" || txtMessage.Text == "")

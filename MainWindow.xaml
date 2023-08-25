@@ -31,7 +31,7 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel>
-                <Calendar x:Name="myCalendar"  CalendarDayButtonStyle="{DynamicResource CalendarCalendarDayButtonStyle1}" Style="{DynamicResource CalendarStyle1}" SelectionMode="SingleDate" SelectedDatesChanged="Calendar_SelectedDatesChanged" Loaded="myCalendar_Loaded"/>
+                <Calendar x:Name="myCalendar" CalendarDayButtonStyle="{DynamicResource CalendarCalendarDayButtonStyle1}" Style="{DynamicResource CalendarStyle1}" SelectionMode="SingleDate" SelectedDatesChanged="Calendar_SelectedDatesChanged" Loaded="myCalendar_Loaded"/>
             </StackPanel>
 
             <StackPanel Grid.Column="1">
